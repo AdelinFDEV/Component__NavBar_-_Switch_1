@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Oswald, Smooch_Sans } from "next/font/google";
+import { Providers } from "./providers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// 1. IMPORT NAVBAR COMPONENT
+import { Navbar } from "@/components/layout/NavBar";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const oswald = Oswald({ variable: "--font-oswald", subsets: ["latin"] });
+const smoochSans = Smooch_Sans({
+  variable: "--font-smooch",
   subsets: ["latin"],
 });
 
@@ -19,15 +19,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${oswald.variable} ${smoochSans.variable} antialiased`}>
+        <Providers>
+          {/* 2. ADD NAVBAR HERE */}
+          <Navbar />
+
+          {/* 3. WRAP CONTENT IN MAIN WITH TOP PADDING (pt-24)
+              pt-24 equals "padding-top: 6rem" (approx 96px), providing space for the fixed navbar. */}
+          <main className="pt-24 min-h-screen">{children}</main>
+        </Providers>
       </body>
     </html>
   );
